@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palácio da Biologia</title>
+    
+    <meta name="theme-color" content="#0a1f0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a1f0a;
+            color: #f0f0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(15, 75, 15, 0.2) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(30, 120, 30, 0.15) 0%, transparent 20%),
+                linear-gradient(to bottom, #0a1f0a, #0f2a0f);
+        }
+
+        /* ========== CONTAINER PRINCIPAL ========== */
+        .main-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 20, 5, 0.98);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-container.active {
+            display: flex;
+        }
+
+        /* ========== CAPA (ÍNDICE) ========== */
+        #cover-page {
+            display: block;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            animation: titleGlow 8s infinite ease-in-out;
+            color: #c8f7c5;
+            text-shadow: 0 0 10px rgba(200, 247, 197, 0.3);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c8f7c5, transparent);
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(200, 247, 197, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(200, 247, 197, 0.6); }
+        }
+
+        .scrolling-text-container {
+            width: 100%;
+            overflow: hidden;
+            margin: 20px 0 25px;
+            height: 30px;
+            position: relative;
+        }
+
+        .scrolling-text {
+            font-size: 0.9rem;
+            color: rgba(168, 216, 165, 0.7);
+            white-space: nowrap;
+            position: absolute;
+            animation: scrollText 25s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% { left: 100%; }
+            100% { left: -100%; }
+        }
+
+        /* ========== GRADE DE CAPÍTULOS ========== */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin: 30px 0 40px;
+            justify-items: center;
+        }
+
+        .chapter-card {
+            background: linear-gradient(135deg, #1a3a1a, #0f2a0f);
+            border: 1px solid #2a5a2a;
+            border-radius: 12px;
+            width: 180px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+            padding: 20px 15px;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            border-color: #3a7a3a;
+            background: linear-gradient(135deg, #2a5a2a, #1a4a1a);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(200, 247, 197, 0.2);
+        }
+
+        .chapter-number {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 1rem;
+            color: #7aa87a;
+            font-weight: bold;
+            background: rgba(10, 31, 10, 0.8);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .chapter-icon {
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            color: #c8f7c5;
+            transition: all 0.3s ease;
+        }
+
+        .chapter-card:hover .chapter-icon {
+            transform: scale(1.1);
+        }
+
+        .chapter-title {
+            font-size: 0.95rem;
+            color: #e0f0e0;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        /* ========== PÁGINA EM CONSTRUÇÃO ========== */
+        .construction-page {
+            display: none;
+            background: rgba(15, 40, 15, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #2a5a2a;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .construction-page.active {
+            display: block;
+        }
+
+        .construction-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(200, 247, 197, 0.05), transparent);
+            animation: shimmer 8s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); }
+        }
+
+        .construction-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            color: #c8f7c5;
+            animation: pulse 3s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(200, 247, 197, 0.4));
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        .construction-title {
+            font-size: 2.2rem;
+            color: #c8f7c5;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .construction-message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #d0e8d0;
+            margin-bottom: 30px;
+        }
+
+        .chapter-info {
+            background: rgba(42, 90, 42, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #3a7a3a;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1a3a1a, #0f2a0f);
+            color: #e0f0e0;
+            border: 1px solid #2a5a2a;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 150px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            border-color: #3a7a3a;
+            background: linear-gradient(135deg, #2a5a2a, #1a4a1a);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2a5a2a, #1a4a1a);
+            border-color: #3a7a3a;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #5a8a5a;
+            font-size: 1rem;
+            width: 100%;
+            padding: 20px;
+            border-top: 1px solid #1a3a1a;
+        }
+
+        .signature {
+            font-size: 1.1rem;
+            color: #7aa87a;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        /* ========== RESPONSIVO ========== */
+        @media (max-width: 1024px) {
+            .chapters-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 18px;
+            }
+            
+            .chapter-card {
+                width: 160px;
+                height: 160px;
+            }
+            
+            .chapter-icon {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .chapters-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
+            }
+            
+            .chapter-card {
+                width: 140px;
+                height: 140px;
+                padding: 15px 10px;
+            }
+            
+            .chapter-icon {
+                font-size: 2.4rem;
+                margin-bottom: 10px;
+            }
+            
+            .chapter-title {
+                font-size: 0.85rem;
+            }
+            
+            .construction-page {
+                padding: 30px 20px;
+            }
+            
+            .construction-title {
+                font-size: 1.8rem;
+            }
+            
+            .construction-icon {
+                font-size: 4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .chapters-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+            
+            .chapter-card {
+                width: 100%;
+                height: 130px;
+                padding: 12px 8px;
+            }
+            
+            .chapter-icon {
+                font-size: 2rem;
+                margin-bottom: 8px;
+            }
+            
+            .chapter-title {
+                font-size: 0.8rem;
+            }
+            
+            .chapter-number {
+                top: 8px;
+                left: 8px;
+                font-size: 0.9rem;
+            }
+            
+            .construction-title {
+                font-size: 1.6rem;
+            }
+            
+            .construction-icon {
+                font-size: 3.5rem;
+            }
+            
+            .construction-message {
+                font-size: 1rem;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .chapters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== CAPA PRINCIPAL ========== -->
+    <div id="cover-page" class="container">
+        <header class="header">
+            <h1 class="title">Palácio da Biologia</h1>
+            
+            <div class="scrolling-text-container">
+                <div class="scrolling-text">Sistema de organização de estudos e memorização. By sr71n3</div>
+            </div>
+        </header>
+        
+        <div class="chapters-grid" id="chaptersContainer">
+            <!-- Capítulos serão gerados por JavaScript -->
+        </div>
+        
+        <footer class="footer">
+            <p>Organizador de Estudos - Palácio da Memória</p>
+            <p class="signature">Dev sr71n3</p>
+        </footer>
+    </div>
+
+    <!-- ========== PÁGINA EM CONSTRUÇÃO ========== -->
+    <div class="main-container" id="constructionContainer">
+        <div class="construction-page" id="constructionPage">
+            <div class="construction-icon">🚧</div>
+            <h1 class="construction-title" id="constructionTitle">Capítulo em Desenvolvimento</h1>
+            
+            <div class="construction-message">
+                <p>Este capítulo está sendo preparado com conteúdo especializado.</p>
+                <p>Em breve estará disponível com material completo para seus estudos.</p>
+                
+                <div class="chapter-info" id="chapterInfo">
+                    <!-- Informações do capítulo serão inseridas aqui -->
+                </div>
+                
+                <p><strong>Por enquanto, você pode:</strong></p>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="openGitHub()">
+                    <i class="fab fa-github"></i> Acessar GitHub
+                </button>
+                <button class="btn" onclick="openGoogle()">
+                    <i class="fab fa-google"></i> Pesquisar no Google
+                </button>
+                <button class="btn" onclick="returnToCover()">
+                    <i class="fas fa-arrow-left"></i> Voltar ao Índice
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIGURAÇÃO DOS CAPÍTULOS ==========
+        const chapters = [
+            // Capítulo 00 - Introdução
+            { 
+                number: "00", 
+                title: "Introdução", 
+                icon: "🏛️",
+                links: {
+                    github: "https://github.com/sr71n3",
+                    google: "https://www.google.com/search?q=introdução+biologia+estudos"
+                }
+            },
+            
+            // Capítulos 01-11
+            { number: "01", title: "Origem da Vida", icon: "🌋", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=origem+da+vida+biologia" }},
+            { number: "02", title: "Citologia", icon: "🔬", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=citologia+biologia" }},
+            { number: "03", title: "Composição Celular", icon: "🧫", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=composição+celular" }},
+            { number: "04", title: "Superfície Celular", icon: "🛡️", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=superfície+celular" }},
+            { number: "05", title: "Citoplasma", icon: "🌀", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=citoplasma+biologia" }},
+            { number: "06", title: "Metabolismo Energético", icon: "⚡", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=metabolismo+energético" }},
+            { number: "07", title: "Núcleo e Síntese Proteica", icon: "🧬", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=núcleo+síntese+proteica" }},
+            { number: "08", title: "Divisões Celulares", icon: "🔄", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=divisões+celulares" }},
+            { number: "09", title: "Reprodução", icon: "👨‍👩‍👧‍👦", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=reprodução+biologia" }},
+            { number: "10", title: "Desenvolvimento Embrionário", icon: "👶", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=desenvolvimento+embrionário" }},
+            { number: "11", title: "Histologia Animal", icon: "🔍", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=histologia+animal" }},
+            
+            // Capítulos 12-25
+            { number: "12", title: "Evolução", icon: "🦖", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=evolução+biologia" }},
+            { number: "13", title: "Vírus", icon: "🦠", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=vírus+biologia" }},
+            { number: "14", title: "Monera", icon: "🦠", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=monera+biologia" }},
+            { number: "15", title: "Protista", icon: "🐙", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=protista+biologia" }},
+            { number: "16", title: "Fungi", icon: "🍄", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=fungi+biologia" }},
+            { number: "17", title: "Plantae", icon: "🌿", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=plantae+biologia" }},
+            { number: "18", title: "Morfologia Vegetal", icon: "🌱", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=morfologia+vegetal" }},
+            { number: "19", title: "Fisiologia Vegetal", icon: "🌻", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=fisiologia+vegetal" }},
+            { number: "20", title: "Introdução aos Animais", icon: "🐾", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=introdução+animais+biologia" }},
+            { number: "21", title: "Platelmintos e Nematoda", icon: "🐛", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=platelmintos+nematoda" }},
+            { number: "22", title: "Mollusca e Anelida", icon: "🐌", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=mollusca+anelida" }},
+            { number: "23", title: "Arthropoda e Equinodermata", icon: "🦀", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=arthropoda+equinodermata" }},
+            { number: "24", title: "Cordata 1", icon: "🐠", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=cordata+biologia" }},
+            { number: "25", title: "Cordata 2", icon: "🐒", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=cordata+vertebrados" }},
+            
+            // Capítulos 26-35
+            { number: "26", title: "Sustentação, Digestão, Respiração", icon: "🫁", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=sustentação+digestão+respiração" }},
+            { number: "27", title: "Circulação, Defesa, Excreção", icon: "❤️", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=circulação+defesa+excreção" }},
+            { number: "28", title: "Coordenação e Regulação", icon: "🧠", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=coordenação+regulação+biologia" }},
+            { number: "29", title: "Genética Clássica", icon: "🧬", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=genética+clássica" }},
+            { number: "30", title: "Primeira Lei de Mendel", icon: "🌱", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=primeira+lei+mendel" }},
+            { number: "31", title: "Segunda Lei de Mendel", icon: "🌾", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=segunda+lei+mendel" }},
+            { number: "32", title: "Ligação Gênica", icon: "🔗", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=ligação+gênica" }},
+            { number: "33", title: "Mutação", icon: "⚡", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=mutação+genética" }},
+            { number: "34", title: "Cromossomos e Genes", icon: "🧬", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=cromossomos+genes" }},
+            { number: "35", title: "Biotecnologia", icon: "🧪", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=biotecnologia+biologia" }},
+            
+            // Capítulos 36-41
+            { number: "36", title: "Teoria da Evolução", icon: "🦍", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=teoria+evolução" }},
+            { number: "37", title: "Ecologia Populacional", icon: "👥", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=ecologia+populacional" }},
+            { number: "38", title: "Ecologia de Comunidades", icon: "🌳", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=ecologia+comunidades" }},
+            { number: "39", title: "Relações Ecológicas", icon: "🤝", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=relações+ecológicas" }},
+            { number: "40", title: "Sucessão Ecológica", icon: "🔄", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=sucessão+ecológica" }},
+            { number: "41", title: "Equilíbrio Ecológico", icon: "⚖️", 
+              links: { github: "https://github.com/sr71n3", google: "https://www.google.com/search?q=equilíbrio+ecológico" }}
+        ];
+
+        // Variáveis globais
+        let currentChapter = null;
+
+        // ========== FUNÇÕES PRINCIPAIS ==========
+        function createChapterCards() {
+            const container = document.getElementById('chaptersContainer');
+            
+            chapters.forEach(chapter => {
+                const card = document.createElement('div');
+                card.className = 'chapter-card';
+                card.setAttribute('data-chapter', chapter.number);
+                
+                card.innerHTML = `
+                    <div class="chapter-number">${chapter.number}</div>
+                    <div class="chapter-icon">${chapter.icon}</div>
+                    <div class="chapter-title">${chapter.title}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    showConstructionPage(chapter);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        function showConstructionPage(chapter) {
+            currentChapter = chapter;
+            
+            // Atualiza o título da página
+            document.getElementById('constructionTitle').textContent = 
+                `Capítulo ${chapter.number}: ${chapter.title}`;
+            
+            // Atualiza as informações do capítulo
+            document.getElementById('chapterInfo').innerHTML = `
+                <p><strong>Capítulo ${chapter.number}:</strong> ${chapter.title}</p>
+                <p>Este material está em fase de desenvolvimento.</p>
+            `;
+            
+            // Mostra a página de construção
+            document.getElementById('cover-page').style.display = 'none';
+            document.getElementById('constructionContainer').classList.add('active');
+            document.getElementById('constructionPage').classList.add('active');
+        }
+
+        function returnToCover() {
+            document.getElementById('constructionContainer').classList.remove('active');
+            document.getElementById('constructionPage').classList.remove('active');
+            document.getElementById('cover-page').style.display = 'block';
+            currentChapter = null;
+        }
+
+        function openGitHub() {
+            if (currentChapter && currentChapter.links.github) {
+                window.open(currentChapter.links.github, '_blank');
+            } else {
+                window.open('https://github.com/sr71n3', '_blank');
+            }
+        }
+
+        function openGoogle() {
+            if (currentChapter && currentChapter.links.google) {
+                window.open(currentChapter.links.google, '_blank');
+            } else {
+                window.open('https://www.google.com', '_blank');
+            }
+        }
+
+        // ========== INICIALIZAÇÃO ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            createChapterCards();
+            
+            // Log de inicialização
+            console.log('✅ Palácio da Biologia carregado com sucesso!');
+            console.log(`📚 Total de capítulos: ${chapters.length}`);
+            console.log('🔗 Links temporários configurados para GitHub e Google');
+            console.log('💡 Para alterar links: Atualize o array "chapters" no JavaScript');
+            
+            // Detecta se está em dispositivo móvel (para Kodular)
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                console.log('📱 Modo móvel detectado - Otimizado para Kodular');
+            }
+        });
+
+        // ========== NAVEGAÇÃO POR TECLADO ==========
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('constructionContainer').classList.contains('active')) {
+                returnToCover();
+            }
+            
+            // Navegação numérica rápida (opcional)
+            if (e.key >= '0' && e.key <= '9' && !document.getElementById('constructionContainer').classList.contains('active')) {
+                const chapterNum = e.key === '0' ? '00' : e.key.padStart(2, '0');
+                const chapter = chapters.find(c => c.number === chapterNum);
+                if (chapter) {
+                    showConstructionPage(chapter);
+                }
+            }
+        });
+
+        // ========== INSTRUÇÕES PARA ATUALIZAÇÃO ==========
+        /*
+        COMO ATUALIZAR OS LINKS NO FUTURO:
+        
+        1. Para cada capítulo no array 'chapters', substitua as URLs em 'links':
+        
+        Exemplo:
+        { 
+          number: "01", 
+          title: "Origem da Vida", 
+          icon: "🌋",
+          links: {
+            github: "https://github.com/seu-usuario/origem-da-vida",
+            google: "https://seu-site.com/capitulo-01"
+          }
+        }
+        
+        2. Você pode manter apenas um link se preferir
+        
+        3. Para links externos, use '_blank' no window.open() se quiser nova aba
+        
+        4. Para conteúdo interno, você pode criar funções específicas
+        
+        O sistema está pronto para sua personalização!
+        */
+    </script>
+</body>
+</html>
