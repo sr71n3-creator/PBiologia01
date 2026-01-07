@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>00 - Introdução | Palácio da Biologia</title>
+    
+    <meta name="theme-color" content="#0a1f0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ========== CÓDIGO CSS IDÊNTICO AO ORIGINAL ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a1f0a;
+            color: #f0f0f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px 0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(15, 75, 15, 0.2) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(30, 120, 30, 0.15) 0%, transparent 20%),
+                linear-gradient(to bottom, #0a1f0a, #0f2a0f);
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            position: relative;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            animation: titleGlow 8s infinite ease-in-out;
+            color: #c8f7c5;
+            text-shadow: 0 0 10px rgba(200, 247, 197, 0.3);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c8f7c5, transparent);
+        }
+
+        @keyframes titleGlow {
+            0%, 100% {
+                text-shadow: 0 0 10px rgba(200, 247, 197, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 20px rgba(200, 247, 197, 0.6);
+            }
+        }
+
+        .scrolling-text-container {
+            width: 100%;
+            overflow: hidden;
+            margin: 20px 0 30px;
+            height: 30px;
+            position: relative;
+        }
+
+        .scrolling-text {
+            font-size: 0.9rem;
+            color: rgba(168, 216, 165, 0.7);
+            white-space: nowrap;
+            position: absolute;
+            animation: scrollText 25s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% {
+                left: 100%;
+            }
+            100% {
+                left: -100%;
+            }
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #1a3a1a, #0f2a0f);
+            color: #e0f0e0;
+            border: 1px solid #2a5a2a;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            border-color: #3a7a3a;
+            background: linear-gradient(135deg, #2a5a2a, #1a4a1a);
+        }
+
+        /* ========== CONTEÚDO DO CAPÍTULO 00 ========== */
+        .chapter-content {
+            background: linear-gradient(135deg, #0f2a0f, #0a1f0a);
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid #2a5a2a;
+            margin: 20px 0 40px;
+        }
+
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #2a5a2a;
+        }
+
+        .chapter-title {
+            font-size: 2.2rem;
+            color: #c8f7c5;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .chapter-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .chapter-subtitle {
+            font-size: 1.3rem;
+            color: #a8d8a8;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        /* ESTILOS PARA OS TÓPICOS DE ÍNDICE (IGUAL AO MODAL ORIGINAL) */
+        .topics-index-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .index-item {
+            background: linear-gradient(135deg, #1a3a1a, #0f2a0f);
+            border: 1px solid #2a5a2a;
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .index-item:hover {
+            transform: translateX(5px);
+            border-color: #3a7a3a;
+            background: linear-gradient(135deg, #2a5a2a, #1a4a1a);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .index-number {
+            font-size: 1.3rem;
+            color: #c8f7c5;
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 40px;
+        }
+
+        .index-title {
+            font-size: 1rem;
+            color: #e0f0e0;
+            flex-grow: 1;
+        }
+
+        .index-icon {
+            font-size: 1.5rem;
+            margin-left: 10px;
+            color: #7aa87a;
+        }
+
+        /* ESTILOS PARA CONTEÚDO DO CAPÍTULO */
+        .content-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(26, 58, 26, 0.2);
+            border-radius: 10px;
+            border-left: 4px solid #3a7a3a;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #c8f7c5;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .section-content {
+            color: #d0e8d0;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .section-content ul, .section-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .section-content li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            color: #c8f7c5;
+            font-weight: 500;
+            background: rgba(42, 90, 42, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #5a8a5a;
+            font-size: 1rem;
+            width: 100%;
+            padding: 20px;
+            border-top: 1px solid #1a3a1a;
+        }
+
+        .signature {
+            font-size: 1.2rem;
+            color: #7aa87a;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Responsive - IDÊNTICO AO ORIGINAL */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .chapter-content {
+                padding: 30px 20px;
+            }
+            
+            .chapter-title {
+                font-size: 1.8rem;
+            }
+            
+            .topics-index-container {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .chapter-content {
+                padding: 20px 15px;
+            }
+            
+            .chapter-title {
+                font-size: 1.5rem;
+            }
+            
+            .chapter-icon {
+                font-size: 3rem;
+            }
+            
+            .index-item {
+                padding: 12px 15px;
+            }
+            
+            .index-number {
+                font-size: 1.1rem;
+                min-width: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Palácio da Biologia</h1>
+            
+            <div class="scrolling-text-container">
+                <div class="scrolling-text">Capítulo 00 - Introdução ao Sistema de Estudos. By sr71n3</div>
+            </div>
+        </header>
+        
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Voltar à Capa Principal
+        </a>
+        
+        <div class="chapter-content">
+            <div class="chapter-header">
+                <div class="chapter-icon">🏛️</div>
+                <h2 class="chapter-title">00 – Introdução</h2>
+                <p class="chapter-subtitle">Sistema de Organização de Estudos e Memorização</p>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="section-title"><i class="fas fa-brain"></i> O Método do Palácio da Memória</h3>
+                <div class="section-content">
+                    <p>O <span class="highlight">Palácio da Biologia</span> é um sistema baseado na técnica milenar do <strong>Palácio da Memória</strong> (também conhecido como Método de Loci), adaptado para o estudo organizado da Biologia.</p>
+                    
+                    <p><strong>Como funciona:</strong></p>
+                    <ul>
+                        <li>Cada capítulo representa uma <span class="highlight">"sala" ou "cômodo"</span> no palácio</li>
+                        <li>Os conceitos são organizados de forma <span class="highlight">espacial e visual</span></li>
+                        <li>A sequência lógica dos capítulos facilita a <span class="highlight">memorização e recuperação</span> das informações</li>
+                        <li>O sistema estimula <span class="highlight">associações mentais fortes</span> entre os conceitos</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="section-title"><i class="fas fa-book-open"></i> Estrutura do Sistema</h3>
+                <div class="section-content">
+                    <p>O Palácio da Biologia está organizado em <span class="highlight">42 capítulos</span>, divididos em uma sequência lógica que acompanha o desenvolvimento do conhecimento biológico:</p>
+                    
+                    <ol>
+                        <li><strong>Fundamentos da Vida</strong> (Capítulos 01-11): Do nível molecular às células</li>
+                        <li><strong>Diversidade Biológica</strong> (Capítulos 12-25): Dos vírus aos vertebrados</li>
+                        <li><strong>Fisiologia e Sistemas</strong> (Capítulos 26-35): Funcionamento dos organismos</li>
+                        <li><strong>Ecologia e Evolução</strong> (Capítulos 36-41): Relações e transformações</li>
+                    </ol>
+                    
+                    <p>Cada capítulo contém subdivisões lógicas que facilitam o estudo passo a passo.</p>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="section-title"><i class="fas fa-lightbulb"></i> Como Estudar com Este Sistema</h3>
+                <div class="section-content">
+                    <p><strong>Dicas para maximizar seu aprendizado:</strong></p>
+                    
+                    <ul>
+                        <li><span class="highlight">Estude em sequência:</span> Siga a ordem dos capítulos para construir conhecimento progressivo</li>
+                        <li><span class="highlight">Crie imagens mentais:</span> Associe cada conceito a uma imagem vívida em sua mente</li>
+                        <li><span class="highlight">Revise periodicamente:</span> Utilize o sistema de repetição espaçada
+                            <ul>
+                                <li>Primeira revisão: 24 horas após o estudo</li>
+                                <li>Segunda revisão: 7 dias após</li>
+                                <li>Terceira revisão: 30 dias após</li>
+                            </ul>
+                        </li>
+                        <li><span class="highlight">Conecte os conceitos:</span> Relacione o que aprendeu em diferentes capítulos</li>
+                        <li><span class="highlight">Pratique ativamente:</span> Teste seu conhecimento regularmente</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- ÍNDICE COMPLETO (IGUAL AO DO MODAL ORIGINAL) -->
+            <div class="content-section">
+                <h3 class="section-title"><i class="fas fa-list-ol"></i> Índice Completo - Todos os Capítulos</h3>
+                <div class="section-content">
+                    <p>Clique em qualquer capítulo abaixo para acessar seu conteúdo:</p>
+                    
+                    <div class="topics-index-container" id="topicsIndex">
+                        <!-- O índice será gerado via JavaScript -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="section-title"><i class="fas fa-rocket"></i> Próximos Passos</h3>
+                <div class="section-content">
+                    <p><strong>Recomendação para iniciar:</strong></p>
+                    <ol>
+                        <li>Comece pelo <span class="highlight">Capítulo 01 - Origem da Vida</span> para construir uma base sólida</li>
+                        <li>Dedique <span class="highlight">30-45 minutos por dia</span> para cada capítulo</li>
+                        <li>Faça anotações pessoais no seu caderno ou dispositivo</li>
+                        <li>Ao final de cada seção, tente <span class="highlight">explicar os conceitos em voz alta</span></li>
+                        <li>Utilize os <span class="highlight">subtópicos</span> de cada capítulo para estudo detalhado</li>
+                    </ol>
+                    
+                    <p style="margin-top: 20px; padding: 15px; background: rgba(42, 90, 42, 0.2); border-radius: 8px;">
+                        <strong>💡 Lembre-se:</strong> A consistência é mais importante que a intensidade. 
+                        15 minutos diários de estudo focado são mais eficazes que 3 horas uma vez por semana.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>Organizador de Estudos - Palácio da Memória</p>
+            <p class="signature">Dev sr71n3</p>
+        </footer>
+    </div>
+
+    <script>
+        // ========== DADOS IDÊNTICOS AO ORIGINAL ==========
+        const topics = [
+            // Capítulo 00 - Introdução
+            { number: "00", title: "Introdução", icon: "🏛️" },
+            
+            // Capítulos 01-11 (Fundamentos da Vida)
+            { number: "01", title: "Origem da Vida", icon: "🌋" },
+            { number: "02", title: "Citologia", icon: "🔬" },
+            { number: "03", title: "Composição Celular", icon: "🧫" },
+            { number: "04", title: "Superfície Celular", icon: "🛡️" },
+            { number: "05", title: "Citoplasma", icon: "🌀" },
+            { number: "06", title: "Metabolismo Energético", icon: "⚡" },
+            { number: "07", title: "Núcleo e Síntese Proteica", icon: "🧬" },
+            { number: "08", title: "Divisões Celulares", icon: "🔄" },
+            { number: "09", title: "Reprodução", icon: "👨‍👩‍👧‍👦" },
+            { number: "10", title: "Desenvolvimento Embrionário", icon: "👶" },
+            { number: "11", title: "Histologia Animal", icon: "🔍" },
+            
+            // Capítulos 12-25 (Diversidade Biológica)
+            { number: "12", title: "Evolução", icon: "🦖" },
+            { number: "13", title: "Vírus", icon: "🦠" },
+            { number: "14", title: "Monera", icon: "🦠" },
+            { number: "15", title: "Protista", icon: "🐙" },
+            { number: "16", title: "Fungi", icon: "🍄" },
+            { number: "17", title: "Plantae", icon: "🌿" },
+            { number: "18", title: "Morfologia Vegetal", icon: "🌱" },
+            { number: "19", title: "Fisiologia Vegetal", icon: "🌻" },
+            { number: "20", title: "Introdução aos Animais", icon: "🐾" },
+            { number: "21", title: "Platelmintos e Nematoda", icon: "🐛" },
+            { number: "22", title: "Mollusca e Anelida", icon: "🐌" },
+            { number: "23", title: "Arthropoda e Equinodermata", icon: "🦀" },
+            { number: "24", title: "Cordata 1", icon: "🐠" },
+            { number: "25", title: "Cordata 2", icon: "🐒" },
+            
+            // Capítulos 26-35 (Fisiologia e Sistemas)
+            { number: "26", title: "Sustentação, Digestão, Respiração", icon: "🫁" },
+            { number: "27", title: "Circulação, Defesa, Excreção", icon: "❤️" },
+            { number: "28", title: "Coordenação e Regulação", icon: "🧠" },
+            { number: "29", title: "Genética Clássica", icon: "🧬" },
+            { number: "30", title: "Primeira Lei de Mendel", icon: "🌱" },
+            { number: "31", title: "Segunda Lei de Mendel", icon: "🌾" },
+            { number: "32", title: "Ligação Gênica", icon: "🔗" },
+            { number: "33", title: "Mutação", icon: "⚡" },
+            { number: "34", title: "Cromossomos e Genes", icon: "🧬" },
+            { number: "35", title: "Biotecnologia", icon: "🧪" },
+            
+            // Capítulos 36-41 (Ecologia e Evolução)
+            { number: "36", title: "Teoria da Evolução", icon: "🦍" },
+            { number: "37", title: "Ecologia Populacional", icon: "👥" },
+            { number: "38", title: "Ecologia de Comunidades", icon: "🌳" },
+            { number: "39", title: "Relações Ecológicas", icon: "🤝" },
+            { number: "40", title: "Sucessão Ecológica", icon: "🔄" },
+            { number: "41", title: "Equilíbrio Ecológico", icon: "⚖️" }
+        ];
+
+        // ========== FUNÇÃO PARA CRIAR O ÍNDICE ==========
+        function createTopicsIndex() {
+            const container = document.getElementById('topicsIndex');
+            
+            topics.forEach(topic => {
+                const item = document.createElement('a');
+                item.className = 'index-item';
+                item.href = topic.number === "00" ? "#" : `capitulo-${topic.number.padStart(2, '0')}.html`;
+                
+                // Para capítulos não existentes ainda, redireciona para construção
+                if (topic.number !== "00") {
+                    item.onclick = function(e) {
+                        if (!document.querySelector(`[href="capitulo-${topic.number.padStart(2, '0')}.html"]`)) {
+                            e.preventDefault();
+                            window.location.href = "construction.html";
+                        }
+                    };
+                }
+                
+                item.innerHTML = `
+                    <div class="index-number">${topic.number}</div>
+                    <div class="index-title">${topic.title}</div>
+                    <div class="index-icon">${topic.icon}</div>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        // ========== INICIALIZAÇÃO ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            createTopicsIndex();
+            
+            console.log('✅ Capítulo 00 - Introdução carregado com sucesso!');
+            console.log('📚 Baseado fielmente no BioV6.html original');
+            console.log('🔗 Links configurados para redirecionamento futuro');
+            
+            // Destacar o capítulo atual
+            const currentItem = document.querySelector('.index-item[href="#"]');
+            if (currentItem) {
+                currentItem.style.background = 'linear-gradient(135deg, #2a5a2a, #1a4a1a)';
+                currentItem.style.borderColor = '#3a7a3a';
+                currentItem.style.cursor = 'default';
+                currentItem.onclick = function(e) { e.preventDefault(); };
+            }
+        });
+
+        // ========== FUNÇÃO DE NAVEGAÇÃO (PARA FUTURA EXPANSÃO) ==========
+        function navigateToChapter(chapterNumber) {
+            // Esta função pode ser expandida para gerenciar navegação entre capítulos
+            console.log(`Navegando para capítulo ${chapterNumber}`);
+            
+            if (chapterNumber === "00") {
+                return; // Já estamos aqui
+            }
+            
+            // Para capítulos futuros
+            const chapterFile = `capitulo-${chapterNumber.padStart(2, '0')}.html`;
+            window.location.href = chapterFile;
+        }
+    </script>
+</body>
+</html>
